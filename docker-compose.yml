@@ -1,0 +1,27 @@
+name: fitcoach-ai
+
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/Dockerfile.dev
+    init: true
+    user: node
+    working_dir: /workspace
+    command: ["sleep", "infinity"]
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    tmpfs:
+      - /tmp
+    volumes:
+      - .:/workspace
+      - pnpm-store:/home/node/.local/share/pnpm/store
+    ports:
+      - "127.0.0.1:5173:5173"
+      - "127.0.0.1:3000:3000"
+
+volumes:
+  pnpm-store:
